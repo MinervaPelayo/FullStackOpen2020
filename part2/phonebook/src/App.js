@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import contactService from './services/contacts'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,26 +11,55 @@ const App = () => {
   const [filterName, setFilterName] = useState("");
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    contactService
+      .getAll()
+      .then(initialContacts => {
+        setPersons(initialContacts)
       })
   }, [])
+
+  const eraseContact = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {     
+    contactService
+      .deleteContact(person.id)
+      .then(response => {
+        setPersons(persons.filter(p => p.id !== person.id))
+      })
+  }}
 
   const addContact = (event) => {
     event.preventDefault();
     const names = persons.map((person) => person.name);
     if (names.includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`);
+      const result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`);
+      if(result){
+        const oldContact =persons.filter((person) => person.name === newName);
+        const contactObject = {
+          name: newName,
+          number: newNumber,
+        };
+
+        contactService
+        .update(oldContact[0].id, contactObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== oldContact[0].id ? person : response));
+          setNewName("");
+          setNewNumber("");
+        })
+      }
     } else {
       const contactObject = {
         name: newName,
         number: newNumber,
       };
-      setPersons(persons.concat(contactObject));
-      setNewName("");
-      setNewNumber("");
+
+      contactService
+        .create(contactObject)
+        .then(returnedContact=> {
+          setPersons(persons.concat(returnedContact));
+          setNewName("");
+          setNewNumber("");
+        })
     }
   };
 
@@ -59,7 +88,7 @@ const App = () => {
         handleNumber={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons filterName={filterName} persons={persons} />
+      <Persons filterName={filterName} persons={persons} eraseContact={eraseContact} />
     </div>
   );
 };

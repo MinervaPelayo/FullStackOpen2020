@@ -4,6 +4,7 @@ const Contacts = (props) => {
   return props.persons.map((person) => (
     <div key={person.name}>
       {person.name} {person.number}
+      <button onClick={()=> props.handleDelete(person)}>delete</button>
     </div>
   ));
 };
@@ -17,6 +18,7 @@ const ContactsFilter = (props) => {
     .map((person) => (
       <div key={person.name}>
         {person.name} {person.number}
+        <button onClick={props.handleDelete}>delete</button>
       </div>
     ));
 };
@@ -25,9 +27,9 @@ const Persons = (props) => {
   return (
     <div>
       {props.filterName === "" ? (
-        <Contacts persons={props.persons} />
+        <Contacts persons={props.persons} handleDelete={props.eraseContact}/>
       ) : (
-        <ContactsFilter persons={props.persons} filterName={props.filterName} />
+        <ContactsFilter persons={props.persons} filterName={props.filterName} handleDelete={props.eraseContact} />
       )}
     </div>
   );
