@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification"
 import contactService from './services/contacts'
 
 const App = () => {
@@ -9,6 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterName, setFilterName] = useState("");
+  const [message, setMessage] = useState(null);
+  const [className, setClassName] = useState(null);
 
   useEffect(() => {
     contactService
@@ -45,6 +48,23 @@ const App = () => {
           setPersons(persons.map(person => person.id !== oldContact[0].id ? person : response));
           setNewName("");
           setNewNumber("");
+          setClassName("success");
+          setMessage(
+            `Number of '${response.name}' was changed`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setClassName("error");
+          setMessage(
+            `Information of '${oldContact[0].name}' has already been removed`
+          )
+          setPersons(persons.filter(person => person.id !== oldContact[0].id))
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
       }
     } else {
@@ -59,6 +79,13 @@ const App = () => {
           setPersons(persons.concat(returnedContact));
           setNewName("");
           setNewNumber("");
+          setClassName("success");
+          setMessage(
+            `Added '${returnedContact.name}'`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
   };
@@ -78,6 +105,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} className={className} />
       <Filter filterName={filterName} handleFilter={handleFilterChange} />
       <h3>add a new</h3>
       <PersonForm
