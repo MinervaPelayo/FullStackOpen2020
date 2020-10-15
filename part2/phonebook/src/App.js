@@ -59,7 +59,7 @@ const App = () => {
         .catch(error => {
           setClassName("error");
           setMessage(
-            `Information of '${oldContact[0].name}' has already been removed`
+            `Validation error or information of '${oldContact[0].name}' has already been removed`
           )
           setPersons(persons.filter(person => person.id !== oldContact[0].id))
           setTimeout(() => {
@@ -82,6 +82,15 @@ const App = () => {
           setClassName("success");
           setMessage(
             `Added '${returnedContact.name}'`
+          )
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setClassName("error");
+          setMessage(
+            `Validation error. Name should be unique and min 3 characters long. Number min 8`
           )
           setTimeout(() => {
             setMessage(null)
