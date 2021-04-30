@@ -1,0 +1,42 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are grat",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "create new custom hooks",
+      "id": 3
+    },
+    {
+      "content": "part 7 custom hooks",
+      "id": 4
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "minerva ",
+      "number": "041-1452458",
+      "id": 3
+    },
+    {
+      "name": "john",
+      "number": "041-548425",
+      "id": 4
+    }
+  ]
+}
