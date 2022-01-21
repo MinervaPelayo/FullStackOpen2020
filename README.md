@@ -10,3 +10,4 @@ https://fullstackopen.com/en/
 * Part 6: State management with Redux
 * Part 7: React router, custom hooks, styling app with CSS and webpack
 * Part 8: GraphQL
+* Part 9: TypeScript
